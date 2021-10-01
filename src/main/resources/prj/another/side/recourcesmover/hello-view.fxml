@@ -19,7 +19,7 @@
             <HBox>
                <children>
                   <TextField prefWidth="180.0" />
-                  <Button mnemonicParsing="false" text="Open" />
+                  <Button mnemonicParsing="false" onAction="#openFromFolder" text="Open" />
                </children>
             </HBox>
          </children>
@@ -30,7 +30,7 @@
             <HBox>
                <children>
                   <TextField prefWidth="180.0" />
-                  <Button mnemonicParsing="false" text="Open" />
+                  <Button mnemonicParsing="false" onAction="#openWhereFolder" text="Open" />
                </children>
             </HBox>
          </children>
@@ -41,7 +41,7 @@
             <HBox>
                <children>
                   <TextField prefWidth="180.0" />
-                  <Button mnemonicParsing="false" text="Open" />
+                  <Button mnemonicParsing="false" onAction="#openLogFile" text="Open" />
                </children>
             </HBox>
          </children>
@@ -50,11 +50,11 @@
         <menus>
           <Menu mnemonicParsing="false" text="About">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#onAction" text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" text="Start!" />
+      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startMove" text="Start!" />
    </children>
 </AnchorPane>
