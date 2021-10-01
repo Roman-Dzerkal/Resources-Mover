@@ -13,34 +13,34 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prj.another.side.recourcesmover.HelloController">
    <children>
-      <VBox layoutX="203.0" layoutY="103.0">
+      <VBox layoutX="65.0" layoutY="103.0">
          <children>
             <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="From folder" />
             <HBox>
                <children>
-                  <TextField prefWidth="180.0" />
+                  <TextField fx:id="fromFolderPathtf" prefWidth="360.0" />
                   <Button mnemonicParsing="false" onAction="#openFromFolder" text="Open" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="203.0" layoutY="179.0">
+      <VBox layoutX="65.0" layoutY="179.0">
          <children>
             <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Where folder" />
             <HBox>
                <children>
-                  <TextField prefWidth="180.0" />
+                  <TextField fx:id="whereFolderPathtf" prefWidth="360.0" />
                   <Button mnemonicParsing="false" onAction="#openWhereFolder" text="Open" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="203.0" layoutY="256.0">
+      <VBox layoutX="65.0" layoutY="256.0">
          <children>
             <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="log.txt" />
             <HBox>
                <children>
-                  <TextField prefWidth="180.0" />
+                  <TextField fx:id="logFilePathtf" prefWidth="360.0" />
                   <Button mnemonicParsing="false" onAction="#openLogFile" text="Open" />
                </children>
             </HBox>
