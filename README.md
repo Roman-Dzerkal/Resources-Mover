@@ -4,6 +4,6 @@
 **author:** Roman "_mmyr_" Dzerkal 
 
 # About
-This program moves resources (f.e textures) from `From` folder to `Where` folder.
+This program moves resources (f.e textures) from `Source` folder to `Target` folder.
 
 List of resources locates in `.log` file in game folder.

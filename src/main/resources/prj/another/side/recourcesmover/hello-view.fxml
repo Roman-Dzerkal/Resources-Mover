@@ -10,50 +10,38 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
+<!--suppress ALL -->
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prj.another.side.recourcesmover.HelloController">
    <children>
       <VBox layoutX="65.0" layoutY="103.0">
          <children>
-            <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="From folder" />
+            <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Source folder" />
             <HBox>
                <children>
-                  <TextField fx:id="fromFolderPathtf" prefWidth="360.0" />
-                  <Button mnemonicParsing="false" onAction="#openFromFolder" text="Open" />
+                  <TextField fx:id="sourceDirectoryTextField" prefWidth="360.0" />
+                  <Button mnemonicParsing="false" onAction="#openSourceDirectory" text="Open" />
                </children>
             </HBox>
          </children>
       </VBox>
       <VBox layoutX="65.0" layoutY="179.0">
-         <children>
-            <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Where folder" />
-            <HBox>
-               <children>
-                  <TextField fx:id="whereFolderPathtf" prefWidth="360.0" />
-                  <Button mnemonicParsing="false" onAction="#openWhereFolder" text="Open" />
-               </children>
-            </HBox>
-         </children>
+         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Target folder"/>
+         <HBox>
+            <TextField fx:id="targetDirectoryTextField" prefWidth="360.0"/>
+            <Button mnemonicParsing="false" onAction="#openTargetDirectory" text="Open"/>
+         </HBox>
       </VBox>
       <VBox layoutX="65.0" layoutY="256.0">
-         <children>
-            <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="log.txt" />
-            <HBox>
-               <children>
-                  <TextField fx:id="logFilePathtf" prefWidth="360.0" />
-                  <Button mnemonicParsing="false" onAction="#openLogFile" text="Open" />
-               </children>
-            </HBox>
-         </children>
+         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Log file"/>
+         <HBox>
+            <TextField fx:id="logFileTextField" prefWidth="360.0"/>
+            <Button mnemonicParsing="false" onAction="#openLogFile" text="Open"/>
+         </HBox>
       </VBox>
       <MenuBar layoutY="2.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="About">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#onAction" text="About" />
-            </items>
-          </Menu>
-        </menus>
+         <Menu mnemonicParsing="false" text="About">
+            <MenuItem mnemonicParsing="false" onAction="#openAboutWindow" text="About"/>
+         </Menu>
       </MenuBar>
       <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startMove" text="Start!" />
    </children>
