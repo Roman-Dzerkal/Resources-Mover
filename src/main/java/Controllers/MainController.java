@@ -1,8 +1,9 @@
-package prj.another.side.recourcesmover;
+package Controllers;
 
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HelloController {
+public class MainController {
     private final Logger CONSOLE = Logger.getLogger("HelloController");
     private File logFile;
     private File sourceDirectory;
@@ -21,6 +22,9 @@ public class HelloController {
     public TextField sourceDirectoryTextField;
     public TextField targetDirectoryTextField;
 
+    public void initialize() {
+    }
+
 
     public void openSourceDirectory() {
         DirectoryChooser sourceDirectoryChooser = new DirectoryChooser();
@@ -29,7 +33,6 @@ public class HelloController {
         if (sourceDirectory == null) {
             CONSOLE.log(Level.WARNING, "No source folder selected!");
         }
-
         sourceDirectoryTextField.setText(sourceDirectory.getPath());
     }
 
@@ -75,5 +78,11 @@ public class HelloController {
             pathsList.add(pathToResource);
         }
         fstream.close();
+    }
+
+    public void showAll(int... number) {
+        for (int i : number) {
+            System.out.printf("%d\n",i);
+        }
     }
 }

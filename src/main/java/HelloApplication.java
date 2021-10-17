@@ -1,4 +1,4 @@
-package prj.another.side.recourcesmover;
+// TODO: Перенос .ogg файлов
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
