@@ -6,11 +6,13 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <!--suppress ALL -->
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
    <children>
       <VBox layoutX="65.0" layoutY="103.0">
@@ -25,24 +27,47 @@
          </children>
       </VBox>
       <VBox layoutX="65.0" layoutY="179.0">
-         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Target folder"/>
+         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Target folder" />
          <HBox>
-            <TextField fx:id="targetDirectoryTextField" prefWidth="360.0"/>
-            <Button mnemonicParsing="false" onAction="#openTargetDirectory" text="Open"/>
+            <TextField fx:id="targetDirectoryTextField" prefWidth="360.0" />
+            <Button mnemonicParsing="false" onAction="#openTargetDirectory" text="Open" />
          </HBox>
       </VBox>
       <VBox layoutX="65.0" layoutY="256.0">
-         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Log file"/>
+         <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Log file" />
          <HBox>
-            <TextField fx:id="logFileTextField" prefWidth="360.0"/>
-            <Button mnemonicParsing="false" onAction="#openLogFile" text="Open"/>
+            <TextField fx:id="logFileTextField" prefWidth="360.0" />
+            <Button mnemonicParsing="false" onAction="#openLogFile" text="Open" />
          </HBox>
       </VBox>
       <MenuBar layoutY="2.0">
-         <Menu mnemonicParsing="false" text="About">
-            <MenuItem mnemonicParsing="false" onAction="#openAboutWindow" text="About"/>
+         <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#open" text="Open">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#save" text="Save">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator></MenuItem>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Help">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#openAboutWindow" text="Recource Mover Help">
+                  <accelerator>
+                     <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                  </accelerator>
+               </MenuItem>
+            </items>
          </Menu>
       </MenuBar>
-      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startMove" text="Start!" />
+      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startCopy" text="Start!" />
+      <Button layoutY="374.0" mnemonicParsing="false" onAction="#parseLogFile" text="Parse Log File" />
    </children>
 </AnchorPane>

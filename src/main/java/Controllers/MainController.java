@@ -1,22 +1,28 @@
 package Controllers;
 
+import Models.Model;
+import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.Format;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainController {
-    private final Logger CONSOLE = Logger.getLogger("HelloController");
-    private File logFile;
-    private File sourceDirectory;
-    private File targetDirectory;
-    private List<String> pathsList;
+    private final Logger CONSOLE = Logger.getLogger(MainController.class.getName());
+
 
     public TextField logFileTextField;
     public TextField sourceDirectoryTextField;
@@ -28,61 +34,81 @@ public class MainController {
 
     public void openSourceDirectory() {
         DirectoryChooser sourceDirectoryChooser = new DirectoryChooser();
-        sourceDirectory = sourceDirectoryChooser.showDialog(null);
+        Model.sourceDirectory = sourceDirectoryChooser.showDialog(null);
 
-        if (sourceDirectory == null) {
+        if (Model.sourceDirectory == null) {
             CONSOLE.log(Level.WARNING, "No source folder selected!");
         }
-        sourceDirectoryTextField.setText(sourceDirectory.getPath());
+        sourceDirectoryTextField.setText(Model.sourceDirectory.getPath());
     }
 
     public void openTargetDirectory() {
         DirectoryChooser targetDirectoryChooser = new DirectoryChooser();
-        targetDirectory = targetDirectoryChooser.showDialog(null);
+        Model.targetDirectory = targetDirectoryChooser.showDialog(null);
 
-        if (targetDirectory == null) {
+        if (Model.targetDirectory == null) {
             CONSOLE.log(Level.WARNING, "No target folder selected!");
         }
 
-        targetDirectoryTextField.setText(targetDirectory.getPath());
+        targetDirectoryTextField.setText(Model.targetDirectory.getPath());
     }
 
     public void openLogFile() {
         FileChooser logFileChooser = new FileChooser();
         logFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Logs", "*.log"));
-        logFile = logFileChooser.showOpenDialog(null);
+        Model.logFile = logFileChooser.showOpenDialog(null);
 
-        if (logFile == null) {
+        if (Model.logFile == null) {
             CONSOLE.log(Level.WARNING, "No log file selected!");
         }
 
-        logFileTextField.setText(logFile.getPath());
+        logFileTextField.setText(Model.logFile.getPath());
     }
 
     public void openAboutWindow() {
         CONSOLE.log(Level.INFO, "On action\n");
     }
 
-    public void startMove() throws IOException {
-        CONSOLE.log(Level.INFO, "Start\n");
-        pathsList = new ArrayList<>();
-        FileInputStream fstream = new FileInputStream(logFile.getPath());
-        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+    public void startCopy() throws IOException {
 
-        String pathToResource;
-
-        while ((pathToResource = br.readLine()) != null) {
-            pathToResource = pathToResource.substring("[16.58.24] ! Can't find texture '".length());
-            pathToResource = pathToResource.replace("'", "");
-
-            pathsList.add(pathToResource);
-        }
-        fstream.close();
     }
 
-    public void showAll(int... number) {
-        for (int i : number) {
-            System.out.printf("%d\n",i);
+    public void parseLogFile() {
+
+    }
+
+    public void quit() {
+        System.exit(0);
+    }
+
+    // TODO: поменять массив на объект
+    public void save() throws IOException {
+        JSONObject data = new JSONObject();
+        JSONArray ja = new JSONArray();
+        ja.put("data");
+        data.put("source_directory", Model.sourceDirectory);
+        data.put("target_directory", Model.targetDirectory);
+        data.put("log_file", Model.logFile.getPath());
+        ja.put(data);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save data");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8);
+            writer.print(ja);
+            writer.close();
         }
+
+        System.out.println(ja);
+    }
+
+    public void open() throws IOException{
+        FileChooser openJson = new FileChooser();
+        openJson.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
+        File jsonFile = openJson.showOpenDialog(null);
+        String json = FileUtils.fileRead(jsonFile.getAbsolutePath());
     }
 }
