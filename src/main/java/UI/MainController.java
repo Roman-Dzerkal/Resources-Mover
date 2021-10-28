@@ -1,22 +1,16 @@
-package Controllers;
+package UI;
 
+import Logic.ParseLogFile;
 import Models.Model;
-import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
+import org.controlsfx.control.Notifications;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,34 +29,39 @@ public class MainController {
     public void openSourceDirectory() {
         DirectoryChooser sourceDirectoryChooser = new DirectoryChooser();
         Model.sourceDirectory = sourceDirectoryChooser.showDialog(null);
-
-        if (Model.sourceDirectory == null) {
-            CONSOLE.log(Level.WARNING, "No source folder selected!");
-        }
         sourceDirectoryTextField.setText(Model.sourceDirectory.getPath());
+        System.out.printf("Source directory path: %s\n", Model.sourceDirectory.getPath());
     }
 
     public void openTargetDirectory() {
         DirectoryChooser targetDirectoryChooser = new DirectoryChooser();
         Model.targetDirectory = targetDirectoryChooser.showDialog(null);
-
-        if (Model.targetDirectory == null) {
-            CONSOLE.log(Level.WARNING, "No target folder selected!");
-        }
-
         targetDirectoryTextField.setText(Model.targetDirectory.getPath());
+        System.out.printf("Target directory path: %s\n", Model.targetDirectory.getPath());
     }
 
     public void openLogFile() {
-        FileChooser logFileChooser = new FileChooser();
-        logFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Logs", "*.log"));
-        Model.logFile = logFileChooser.showOpenDialog(null);
 
-        if (Model.logFile == null) {
-            CONSOLE.log(Level.WARNING, "No log file selected!");
+        if (Model.sourceDirectory == null) {
+            Notifications.create()
+                    .title("Empty source directory")
+                    .text("Select the source directory")
+                    .show();
+        } else if (Model.targetDirectory == null) {
+            Notifications.create()
+                    .title("Empty target directory")
+                    .text("Select the target directory")
+                    .show();
+        } else {
+            FileChooser logFileChooser = new FileChooser();
+            logFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Logs", "*.log"));
+            Model.logFile = logFileChooser.showOpenDialog(null);
+            logFileTextField.setText(Model.logFile.getPath());
+            System.out.printf("Log file path: %s\n", Model.logFile.getPath());
+
+            Thread thread = new Thread(new ParseLogFile(Model.logFile));
+            thread.start();
         }
-
-        logFileTextField.setText(Model.logFile.getPath());
     }
 
     public void openAboutWindow() {
@@ -70,11 +69,8 @@ public class MainController {
     }
 
     public void startCopy() throws IOException {
-
-    }
-
-    public void parseLogFile() {
-
+        Thread thread = new Thread(new ParseLogFile(Model.logFile));
+        thread.start();
     }
 
     public void quit() {
@@ -84,25 +80,22 @@ public class MainController {
     // TODO: поменять массив на объект
     public void save() throws IOException {
         JSONObject data = new JSONObject();
-        JSONArray ja = new JSONArray();
-        ja.put("data");
         data.put("source_directory", Model.sourceDirectory);
         data.put("target_directory", Model.targetDirectory);
         data.put("log_file", Model.logFile.getPath());
-        ja.put(data);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("data", data);
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save data");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
-        File file = fileChooser.showSaveDialog(null);
+        File fileToSave = fileChooser.showSaveDialog(null);
 
-        if (file != null) {
-            PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8);
-            writer.print(ja);
+        if (fileToSave != null) {
+            PrintWriter writer = new PrintWriter(fileToSave, StandardCharsets.UTF_8);
+            writer.print(jsonObject);
             writer.close();
         }
-
-        System.out.println(ja);
     }
 
     public void open() throws IOException{
@@ -110,5 +103,7 @@ public class MainController {
         openJson.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
         File jsonFile = openJson.showOpenDialog(null);
         String json = FileUtils.fileRead(jsonFile.getAbsolutePath());
+        JSONObject jsonObject = new JSONObject(json);
+        System.out.println(jsonObject.getJSONObject("data"));
     }
 }
