@@ -3,6 +3,8 @@
 
 **author:** Roman "_mmyr_" Dzerkal 
 
+//
+
 # About
 This program moves resources (f.e textures) from `Source` folder to `Target` folder.
 
