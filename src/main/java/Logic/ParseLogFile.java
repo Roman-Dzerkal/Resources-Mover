@@ -1,13 +1,8 @@
 package Logic;
 
-import Models.Model;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.io.*;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -16,7 +11,7 @@ import java.util.stream.Stream;
  * Main goal - extract the paths (to textures) from file.
  * NOTE: If file doesn't exist by path - ignore.
  */
-public class ParseLogFile implements Runnable {
+public class ParseLogFile implements Callable<Boolean> {
 
     /**
      * file.log, e.g [17.10.2021 13.12.53].log
@@ -34,25 +29,24 @@ public class ParseLogFile implements Runnable {
     }
 
     @Override
-    public void run() {
-        String readFile = null; // Content of the log file
+    public Boolean call() {
         try {
-            readFile = FileUtils.fileRead(logFile.getAbsolutePath());
-        } catch (IOException ioException) {
-            CONSOLE.warning(ioException.getMessage());
-        }
+            Reader reader = new FileReader(logFile.getAbsolutePath());
+            BufferedReader logFileReader = new BufferedReader(reader);
+            Stream<String> lines = logFileReader.lines();
 
-        assert readFile != null;
-        List<String> t = readFile.lines().toList(); // Split log file to lines
-
-        for (String line : t) {
-            int start = line.indexOf("Can't find texture '") + "Can't find texture '".length(); //second position ' sign
-            if (line.contains("Can't find texture")) { // find all lines, where specify path to texture
-
-                // E:\S.T.A.L.K.E.R. Call of Pripyat\gamedata\textures\ + wm\wm_knife_wood2
-                Model.pathList.add(Model.sourceDirectory.getAbsolutePath() + line.substring(start, line.length() - 1));
-                // Result: full path to texture: E:\S.T.A.L.K.E.R. Call of Pripyat\gamedata\textures\wm\wm_knife_wood2
-            }
+            lines.forEach(new Consumer<String>() {
+                @Override
+                public void accept(String s) {
+                    if (s.contains("Can't find texture")) {
+                        System.out.println(s);
+                    }
+                }
+            });
+            return true;
+        } catch (Exception e) {
+            CONSOLE.warning(e.getMessage());
+            return false;
         }
     }
 }

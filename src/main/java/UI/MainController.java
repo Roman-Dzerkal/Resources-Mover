@@ -5,12 +5,11 @@ import Models.Model;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.Notifications;
-import org.json.JSONObject;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,8 +58,11 @@ public class MainController {
             logFileTextField.setText(Model.logFile.getPath());
             System.out.printf("Log file path: %s\n", Model.logFile.getPath());
 
-            Thread thread = new Thread(new ParseLogFile(Model.logFile));
-            thread.start();
+            ExecutorService service = Executors.newCachedThreadPool();
+            service.submit(new ParseLogFile(Model.logFile));
+
+//            Thread thread = new Thread(new ParseLogFile(Model.logFile));
+//            thread.start();
         }
     }
 
@@ -69,15 +71,15 @@ public class MainController {
     }
 
     public void startCopy() throws IOException {
-        Thread thread = new Thread(new ParseLogFile(Model.logFile));
-        thread.start();
+//        Thread thread = new Thread(new ParseLogFile(Model.logFile));
+//        thread.start();
     }
 
     public void quit() {
         System.exit(0);
     }
 
-    // TODO: поменять массив на объект
+    /* TODO: поменять массив на объект
     public void save() throws IOException {
         JSONObject data = new JSONObject();
         data.put("source_directory", Model.sourceDirectory);
@@ -96,14 +98,14 @@ public class MainController {
             writer.print(jsonObject);
             writer.close();
         }
-    }
+    } */
 
-    public void open() throws IOException{
+    /* public void open() throws IOException{
         FileChooser openJson = new FileChooser();
         openJson.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
         File jsonFile = openJson.showOpenDialog(null);
         String json = FileUtils.fileRead(jsonFile.getAbsolutePath());
         JSONObject jsonObject = new JSONObject(json);
         System.out.println(jsonObject.getJSONObject("data"));
-    }
+    } */
 }
