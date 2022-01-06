@@ -7,7 +7,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.Notifications;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -15,15 +14,12 @@ import java.util.logging.Logger;
 
 public class MainController {
     private final Logger CONSOLE = Logger.getLogger(MainController.class.getName());
-
-
     public TextField logFileTextField;
     public TextField sourceDirectoryTextField;
     public TextField targetDirectoryTextField;
 
     public void initialize() {
     }
-
 
     public void openSourceDirectory() {
         DirectoryChooser sourceDirectoryChooser = new DirectoryChooser();
@@ -33,79 +29,83 @@ public class MainController {
     }
 
     public void openTargetDirectory() {
+        if (Model.sourceDirectory == null) {
+            Notifications.create()
+                    .title("Empty source directory")
+                    .text("Select the source directory")
+                    .showInformation();
+            return;
+        }
+
         DirectoryChooser targetDirectoryChooser = new DirectoryChooser();
         Model.targetDirectory = targetDirectoryChooser.showDialog(null);
+
+        /*
+         * Check if source and target folders are the same,
+         * otherwise throw error notification.
+         * It's necessary because we shouldn't copy files in the same folder,
+         * from they were uploaded
+         */
+        if (Model.targetDirectory.equals(Model.sourceDirectory)) {
+            Notifications.create()
+                    .title("Same directories")
+                    .text("Source and target directories cannot be the same!\n" +
+                            "Choose another folder.")
+                    .showError();
+            return;
+        }
+
         targetDirectoryTextField.setText(Model.targetDirectory.getPath());
         System.out.printf("Target directory path: %s\n", Model.targetDirectory.getPath());
     }
 
     public void openLogFile() {
-
         if (Model.sourceDirectory == null) {
             Notifications.create()
                     .title("Empty source directory")
                     .text("Select the source directory")
-                    .show();
+                    .showInformation();
         } else if (Model.targetDirectory == null) {
             Notifications.create()
                     .title("Empty target directory")
                     .text("Select the target directory")
-                    .show();
-        } else {
-            FileChooser logFileChooser = new FileChooser();
-            logFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Logs", "*.log"));
-            Model.logFile = logFileChooser.showOpenDialog(null);
-            logFileTextField.setText(Model.logFile.getPath());
-            System.out.printf("Log file path: %s\n", Model.logFile.getPath());
-
-            ExecutorService service = Executors.newCachedThreadPool();
-            service.submit(new ParseLogFile(Model.logFile));
-
-//            Thread thread = new Thread(new ParseLogFile(Model.logFile));
-//            thread.start();
+                    .showInformation();
         }
+
+        FileChooser logFileChooser = new FileChooser();
+        logFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Logs", "*.log"));
+        Model.logFile = logFileChooser.showOpenDialog(null);
+        logFileTextField.setText(Model.logFile.getPath());
+        System.out.printf("Log file path: %s\n", Model.logFile.getPath());
+
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.submit(new ParseLogFile(Model.logFile));
     }
 
     public void openAboutWindow() {
         CONSOLE.log(Level.INFO, "On action\n");
     }
 
-    public void startCopy() throws IOException {
-//        Thread thread = new Thread(new ParseLogFile(Model.logFile));
-//        thread.start();
+    public void startCopy() {
+        if (Model.sourceDirectory == null) {
+            Notifications.create()
+                    .title("Empty source directory")
+                    .text("Select the source directory")
+                    .showInformation();
+        } else if (Model.targetDirectory == null) {
+            Notifications.create()
+                    .title("Empty target directory")
+                    .text("Select the target directory")
+                    .showInformation();
+        } else if (Model.logFile == null) {
+            Notifications.create()
+                    .title("Log file not selected")
+                    .text("Select a log file")
+                    .showInformation();
+        }
     }
 
     public void quit() {
         System.exit(0);
     }
-
-    /* TODO: поменять массив на объект
-    public void save() throws IOException {
-        JSONObject data = new JSONObject();
-        data.put("source_directory", Model.sourceDirectory);
-        data.put("target_directory", Model.targetDirectory);
-        data.put("log_file", Model.logFile.getPath());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("data", data);
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save data");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
-        File fileToSave = fileChooser.showSaveDialog(null);
-
-        if (fileToSave != null) {
-            PrintWriter writer = new PrintWriter(fileToSave, StandardCharsets.UTF_8);
-            writer.print(jsonObject);
-            writer.close();
-        }
-    } */
-
-    /* public void open() throws IOException{
-        FileChooser openJson = new FileChooser();
-        openJson.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.json"));
-        File jsonFile = openJson.showOpenDialog(null);
-        String json = FileUtils.fileRead(jsonFile.getAbsolutePath());
-        JSONObject jsonObject = new JSONObject(json);
-        System.out.println(jsonObject.getJSONObject("data"));
-    } */
 }

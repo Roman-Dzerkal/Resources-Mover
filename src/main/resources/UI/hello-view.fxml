@@ -11,43 +11,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!--suppress ALL -->
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainController">
    <children>
-      <VBox layoutX="65.0" layoutY="103.0">
+      <VBox layoutX="65.0" layoutY="103.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="129.0">
          <children>
             <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Source folder" />
             <HBox>
                <children>
-                  <TextField fx:id="sourceDirectoryTextField" prefWidth="360.0" />
+                  <TextField fx:id="sourceDirectoryTextField" disable="true" editable="false" prefWidth="360.0" />
                   <Button mnemonicParsing="false" onAction="#openSourceDirectory" text="Open" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="65.0" layoutY="179.0">
+      <VBox layoutX="65.0" layoutY="179.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="129.0">
          <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Target folder" />
          <HBox>
-            <TextField fx:id="targetDirectoryTextField" prefWidth="360.0" />
+            <TextField fx:id="targetDirectoryTextField" disable="true" editable="false" prefWidth="360.0" />
             <Button mnemonicParsing="false" onAction="#openTargetDirectory" text="Open" />
          </HBox>
       </VBox>
-      <VBox layoutX="65.0" layoutY="256.0">
+      <VBox layoutX="65.0" layoutY="256.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="129.0">
          <Label alignment="TOP_RIGHT" contentDisplay="BOTTOM" text="Log file" />
          <HBox>
-            <TextField fx:id="logFileTextField" prefWidth="360.0" />
+            <TextField fx:id="logFileTextField" disable="true" editable="false" prefWidth="360.0" />
             <Button mnemonicParsing="false" onAction="#openLogFile" text="Open" />
          </HBox>
       </VBox>
-      <MenuBar layoutY="2.0">
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" text="Open">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false"  text="Save">
+            <MenuItem mnemonicParsing="false" text="Save">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                </accelerator>
@@ -67,7 +65,6 @@
             </items>
          </Menu>
       </MenuBar>
-      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startCopy" text="Start!" />
-      <Button layoutY="374.0" mnemonicParsing="false"  text="Parse Log File" />
+      <Button layoutX="277.0" layoutY="321.0" mnemonicParsing="false" onAction="#startCopy" text="Start!" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="278.0" />
    </children>
 </AnchorPane>
